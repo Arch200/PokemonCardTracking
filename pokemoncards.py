@@ -1,9 +1,10 @@
-import sqlite3
+import sqlite3 #sql library to allow for SQL analysis
 
+#connecting to database or creating file for it
 conn = sqlite3.connect('pokemonCardCollection.db')
 cursor = conn.cursor()
 
-
+#creates database if doesn't already exist
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Cards (
     Card_ID INTEGER PRIMARY KEY,
@@ -14,6 +15,11 @@ CREATE TABLE IF NOT EXISTS Cards (
 )
 ''')
 
+#Added two new columns to track the database better, will allow to track sets and pokemon
+#cursor.execute('''ALTER TABLE Cards ADD COLUMN PokedexNo REAL''')
+#cursor.execute('''ALTER TABLE Cards ADD COLUMN CardNo REAL''')
+
+#function to update database with new card info
 def insertCard(Card_Name, Language, Card_Type, Value, DexNo,CardNo):
     cursor.execute('''INSERT INTO Cards (Card_Name, Language, Card_Type,Value,PokedexNo,CardNo) 
                     VALUES(?,?,?,?,?,?); ''',(Card_Name,Language,Card_Type,Value,DexNo,CardNo))
@@ -90,6 +96,9 @@ insertCard('Radiant Gardevoir','JPN','Psychic',1.97,282,55172)
 
 cursor.execute('SELECT * FROM Cards;')
 cards = cursor.fetchall()
+
+for card in cards:
+    print(card)
 
 
 def dropDuplicates():
